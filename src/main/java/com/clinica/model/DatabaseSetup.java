@@ -8,34 +8,32 @@ import java.sql.Statement;
 public class DatabaseSetup {
     private static final String URL = "jdbc:sqlite:database/clinica.db";
 
+    public static Connection connect() {
+        try {
+            return DriverManager.getConnection(URL);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao conectar ao banco: " + e.getMessage());
+        }
+    }
+
+    public static void initializeDatabase() {
+        String sql = "CREATE TABLE IF NOT EXISTS users ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "username TEXT UNIQUE NOT NULL, "
+                + "password TEXT NOT NULL, "
+                + "role TEXT NOT NULL DEFAULT 'recepcionista'"
+                + ");";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("✅ Banco de dados inicializado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("❌ Erro ao criar banco: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
-        try (Connection conn = DriverManager.getConnection(URL)) {
-            if (conn != null) {
-                System.out.println("✅ Banco de dados 'clinica.db' criado com sucesso!");
-
-                String sql = "CREATE TABLE IF NOT EXISTS users ("
-                        + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + "username TEXT UNIQUE NOT NULL, "
-                        + "password TEXT NOT NULL"
-                        + ");";
-
-                try (Statement stmt = conn.createStatement()) {
-                    stmt.execute(sql);
-                    System.out.println("✅ Tabela 'users' criada com sucesso!");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("❌ Erro ao criar o banco: " + e.getMessage());
-        }
-
-        String url = "jdbc:sqlite:database/clinica.db";
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                System.out.println("✅ Conexão com SQLite bem-sucedida!");
-            }
-        } catch (SQLException e) {
-            System.out.println("❌ Erro ao conectar ao banco: " + e.getMessage());
-        }
+        initializeDatabase();
     }
 }
