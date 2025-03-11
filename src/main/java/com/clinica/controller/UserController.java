@@ -25,4 +25,26 @@ public class UserController {
         }
         return null; // Retorna null se a autenticação falhar
     }
+
+    public static boolean registerUser(String username, String password, String role) {
+        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseSetup.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, role);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
 }
