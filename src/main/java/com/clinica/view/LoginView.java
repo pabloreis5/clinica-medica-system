@@ -1,7 +1,6 @@
 package com.clinica.view;
 
 import com.clinica.controller.UserController;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,18 +12,15 @@ public class LoginView extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(new Color(44, 62, 80));
-
 
         JLabel titleLabel = new JLabel("Acesso ao Sistema");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBounds(100, 40, 250, 30);
         panel.add(titleLabel);
-
 
         JTextField userField = new JTextField();
         userField.setBounds(100, 120, 200, 35);
@@ -37,7 +33,6 @@ public class LoginView extends JFrame {
         userLabel.setBounds(100, 100, 200, 20);
         panel.add(userLabel);
 
-
         JPasswordField passwordField = new JPasswordField();
         passwordField.setBounds(100, 190, 200, 35);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -49,9 +44,8 @@ public class LoginView extends JFrame {
         passwordLabel.setBounds(100, 170, 200, 20);
         panel.add(passwordLabel);
 
-
         JButton loginButton = new JButton("Entrar");
-        loginButton.setBounds(100, 260, 200, 40);
+        loginButton.setBounds(100, 280, 200, 40);
         loginButton.setFont(new Font("Arial", Font.BOLD, 16));
         loginButton.setBackground(new Color(52, 152, 219));
         loginButton.setForeground(Color.WHITE);
@@ -60,18 +54,7 @@ public class LoginView extends JFrame {
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(loginButton);
 
-
-        JButton registerButton = new JButton("Cadastrar");
-        registerButton.setBounds(100, 320, 200, 40);
-        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
-        registerButton.setBackground(new Color(46, 204, 113));
-        registerButton.setForeground(Color.WHITE);
-        registerButton.setBorder(BorderFactory.createEmptyBorder());
-        registerButton.setFocusPainted(false);
-        registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        panel.add(registerButton);
-
-
+        // 🔹 Ação do Botão de Login
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passwordField.getPassword());
@@ -83,18 +66,15 @@ public class LoginView extends JFrame {
                 JOptionPane.showMessageDialog(null, "Bem-vindo " + username + "!");
                 dispose(); // Fecha a tela de login
 
-                if ("admin".equals(role)) {
-                    new AdminView().setVisible(true);
-                } else if ("recepcionista".equals(role)) {
-                    new RecepcionistaView().setVisible(true);
-                } else if ("medico".equals(role)) {
-                    new MedicoView().setVisible(true);
+                if ("admin".equalsIgnoreCase(role)) {
+                    new AdminView(username).setVisible(true);
+                } else if ("recepcionista".equalsIgnoreCase(role)) {
+                    new RecepcionistaView(username).setVisible(true);
+                } else if ("medico".equalsIgnoreCase(role)) {
+                    new MedicoView(username).setVisible(true);
                 }
             }
         });
-
-
-        registerButton.addActionListener(e -> new RegisterView().setVisible(true));
 
         getContentPane().add(panel);
     }
