@@ -43,7 +43,7 @@ public class AdminView extends JFrame {
 
         // 🔹 Painel Central (Conteúdo dinâmico)
         contentPanel = new JPanel();
-        contentPanel.setLayout(new GridBagLayout()); // Centraliza o conteúdo
+        contentPanel.setLayout(new BorderLayout()); // Mantém melhor alinhamento
         contentPanel.setBackground(Color.WHITE);
 
         // 🔹 Adicionando Componentes ao Frame
@@ -69,10 +69,10 @@ public class AdminView extends JFrame {
         botao.setForeground(Color.WHITE);
         botao.setBackground(new Color(41, 128, 185));
         botao.setFocusPainted(false);
-        botao.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // 🔹 Arredondado
-        botao.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botao.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        botao.setMaximumSize(new Dimension(180, 40)); // 🔹 Tamanho uniforme
+        botao.setMaximumSize(new Dimension(180, 40));
+        botao.setAlignmentX(Component.CENTER_ALIGNMENT); // 🔹 Mantém os botões centralizados
         return botao;
     }
 
@@ -81,7 +81,7 @@ public class AdminView extends JFrame {
      */
     private void trocarConteudo(JPanel novoPainel) {
         contentPanel.removeAll();
-        contentPanel.add(novoPainel);
+        contentPanel.add(novoPainel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
     }
