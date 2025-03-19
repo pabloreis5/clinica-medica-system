@@ -3,7 +3,7 @@ package com.clinica.view;
 import javax.swing.*;
 import java.awt.*;
 
-public class MedicoView extends JFrame {
+public class MedicoView extends BaseView {
     private String username;
 
     public MedicoView(String username) {
