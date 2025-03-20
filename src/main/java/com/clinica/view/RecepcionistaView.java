@@ -13,7 +13,6 @@ public class RecepcionistaView extends BaseView {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // 🔹 Painel Superior (Nome do Recepcionista)
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(44, 62, 80));
         topPanel.setPreferredSize(new Dimension(800, 50));
@@ -33,7 +32,7 @@ public class RecepcionistaView extends BaseView {
         JButton btnCadastrarPaciente = criarBotao("Cadastrar Paciente");
         JButton btnAgendarConsulta = criarBotao("Agendar Consulta");
         JButton btnGerenciarConsultas = criarBotao("Gerenciar Consultas");
-        JButton btnSair = criarBotaoSair(); // 🔹 Botão "Sair" vermelho
+        JButton btnSair = criarBotaoSair();
 
         sideMenu.add(Box.createVerticalStrut(50));
         sideMenu.add(btnCadastrarPaciente);
@@ -44,22 +43,18 @@ public class RecepcionistaView extends BaseView {
         sideMenu.add(Box.createVerticalStrut(50));
         sideMenu.add(btnSair); // 🔹 Adiciona o botão "Sair" no final
 
-        // 🔹 Painel Central (Conteúdo dinâmico)
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
 
-        // 🔹 Adicionando Componentes ao Frame
         add(topPanel, BorderLayout.NORTH);
         add(sideMenu, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
 
-        // 🔹 Evento dos Botões para Mudar o Conteúdo Dinamicamente
         btnCadastrarPaciente.addActionListener(e -> trocarConteudo("cadastrar"));
         btnAgendarConsulta.addActionListener(e -> trocarConteudo("agendar"));
         btnGerenciarConsultas.addActionListener(e -> trocarConteudo("gerenciar"));
 
-        // 🔹 Define a tela inicial como "Cadastrar Paciente"
         trocarConteudo("cadastrar");
     }
 

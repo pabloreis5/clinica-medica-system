@@ -14,7 +14,7 @@ public class CadastrarUsuarioPanel extends JPanel {
     private JPanel extraFieldsPanel;
 
     public CadastrarUsuarioPanel() {
-        setLayout(new GridBagLayout()); // 🔹 Mantém tudo centralizado
+        setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -51,7 +51,6 @@ public class CadastrarUsuarioPanel extends JPanel {
         gbc.gridx++;
         add(tokenField, gbc);
 
-        // 🔹 Painel para CRM e Especialidade (Somente para Médicos)
         extraFieldsPanel = new JPanel(new GridBagLayout());
         extraFieldsPanel.setVisible(false);
 
@@ -99,6 +98,19 @@ public class CadastrarUsuarioPanel extends JPanel {
         repaint();
     }
 
+    private void limparCampos() {
+        usernameField.setText("");
+        passwordField.setText("");
+        tokenField.setText("");
+        crmField.setText("");
+        especialidadeField.setText("");
+
+        roleComboBox.setSelectedIndex(0);
+
+        atualizarCamposExtras();
+    }
+
+
     private void cadastrarUsuario() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
@@ -115,6 +127,7 @@ public class CadastrarUsuarioPanel extends JPanel {
         boolean success = UserController.registerUser(username, password, role.toLowerCase(), crm, especialidade, token);
         if (success) {
             JOptionPane.showMessageDialog(null, role + " cadastrado com sucesso!");
+            limparCampos();
         } else {
             JOptionPane.showMessageDialog(null, "Erro: Token inválido ou username já cadastrado!", "Erro", JOptionPane.ERROR_MESSAGE);
         }

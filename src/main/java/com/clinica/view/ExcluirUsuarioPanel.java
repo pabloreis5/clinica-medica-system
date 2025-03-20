@@ -44,7 +44,7 @@ public class ExcluirUsuarioPanel extends JPanel {
     class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {
             setOpaque(true);
-            setText("❌");
+            setText("Excluir");
             setForeground(Color.WHITE);
             setBackground(new Color(231, 76, 60)); // 🔹 Cor vermelha
             setFont(new Font("Arial", Font.BOLD, 12));
@@ -64,6 +64,7 @@ public class ExcluirUsuarioPanel extends JPanel {
         private boolean isClicked;
 
         public ButtonEditor(JCheckBox checkBox) {
+
             super(checkBox);
             button = new JButton("Excluir");
             button.setOpaque(true);
@@ -79,6 +80,7 @@ public class ExcluirUsuarioPanel extends JPanel {
                 }
             });
         }
+
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -109,10 +111,15 @@ public class ExcluirUsuarioPanel extends JPanel {
             boolean success = UserController.deleteUser(username, token);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso!");
-                carregarUsuarios();
+
+                SwingUtilities.invokeLater(() -> {
+                    carregarUsuarios(); // 🔹 Atualiza a tabela sem erros
+                });
+
             } else {
                 JOptionPane.showMessageDialog(this, "Erro: Token inválido ou usuário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
 }

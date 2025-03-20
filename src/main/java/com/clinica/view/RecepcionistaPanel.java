@@ -27,7 +27,6 @@ public class RecepcionistaPanel extends JPanel {
         }
     }
 
-    // 🔹 Painel de Cadastro de Paciente
     private JPanel criarPainelCadastrarPaciente() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -89,7 +88,6 @@ public class RecepcionistaPanel extends JPanel {
         return panel;
     }
 
-    // 🔹 Painel de Agendamento de Consulta
     private JPanel criarPainelAgendarConsulta() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -172,7 +170,6 @@ public class RecepcionistaPanel extends JPanel {
         return panel;
     }
 
-    // 🔹 Painel de Gerenciamento de Consultas
     private JPanel criarPainelGerenciarConsultas() {
         JPanel panel = new JPanel();
         panel.add(new JLabel("📅 Aqui será exibida a lista de consultas agendadas."));
