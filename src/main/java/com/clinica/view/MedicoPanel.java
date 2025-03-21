@@ -106,3 +106,4 @@ public class MedicoPanel extends JPanel {
         return panel;
     }
 }
+//test
