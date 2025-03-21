@@ -23,7 +23,6 @@ public class RecepcionistaView extends BaseView {
         userLabel.setFont(new Font("Arial", Font.BOLD, 16));
         topPanel.add(userLabel);
 
-        // 🔹 Menu Lateral com Botões
         JPanel sideMenu = new JPanel();
         sideMenu.setLayout(new BoxLayout(sideMenu, BoxLayout.Y_AXIS));
         sideMenu.setPreferredSize(new Dimension(200, 500));
@@ -41,7 +40,7 @@ public class RecepcionistaView extends BaseView {
         sideMenu.add(Box.createVerticalStrut(20));
         sideMenu.add(btnGerenciarConsultas);
         sideMenu.add(Box.createVerticalStrut(50));
-        sideMenu.add(btnSair); // 🔹 Adiciona o botão "Sair" no final
+        sideMenu.add(btnSair);
 
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());

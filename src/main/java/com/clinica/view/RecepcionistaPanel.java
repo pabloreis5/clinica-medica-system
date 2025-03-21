@@ -5,6 +5,8 @@ import com.clinica.controller.PacienteController;
 import com.clinica.controller.ConsultaController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
@@ -171,20 +173,29 @@ public class RecepcionistaPanel extends JPanel {
     }
 
     private JPanel criarPainelGerenciarConsultas() {
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("📅 Aqui será exibida a lista de consultas agendadas."));
-        return panel;
-    }
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel titulo = new JLabel("Consultas Agendadas");
+        titulo.setFont(new Font("Arial", Font.BOLD, 16));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(titulo, BorderLayout.NORTH);
 
-    private JFormattedTextField criarCampoData() {
-        try {
-            MaskFormatter mask = new MaskFormatter("##/##/####");
-            mask.setPlaceholderCharacter('_');
-            return new JFormattedTextField(mask);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new JFormattedTextField();
+        String[] colunas = {"Médico", "Paciente", "Data", "Hora", "Motivo", "Excluir"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0);
+        JTable tabela = new JTable(model);
+        tabela.setRowHeight(30);
+
+        // Preenche com dados do banco
+        List<String[]> consultas = ConsultaController.getTodasConsultas();
+        for (String[] c : consultas) {
+            model.addRow(new Object[]{c[0], c[1], c[2], c[3], c[4], "❌"});
         }
+
+        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox(), model, tabela));
+
+        JScrollPane scroll = new JScrollPane(tabela);
+        panel.add(scroll, BorderLayout.CENTER);
+        return panel;
     }
 
     private JFormattedTextField criarCampoHora() {
@@ -197,6 +208,17 @@ public class RecepcionistaPanel extends JPanel {
             return new JFormattedTextField();
         }
     }
+    private JFormattedTextField criarCampoData() {
+        try {
+            MaskFormatter mask = new MaskFormatter("##/##/####");
+            mask.setPlaceholderCharacter('_');
+            return new JFormattedTextField(mask);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new JFormattedTextField();
+        }
+    }
+
 
     private void estilizarBotao(JButton botao) {
         botao.setFont(new Font("Arial", Font.BOLD, 14));
@@ -205,5 +227,68 @@ public class RecepcionistaPanel extends JPanel {
         botao.setFocusPainted(false);
         botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         botao.setPreferredSize(new Dimension(180, 30));
+    }
+
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+            setText("Excluir");
+            setForeground(Color.WHITE);
+            setBackground(new Color(231, 76, 60));
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    // Editor para lidar com o clique no botão de exclusão
+    class ButtonEditor extends DefaultCellEditor {
+        private JButton button;
+        private JTable table;
+        private DefaultTableModel model;
+        private boolean clicked;
+
+        public ButtonEditor(JCheckBox checkBox, DefaultTableModel model, JTable table) {
+            super(checkBox);
+            this.model = model;
+            this.table = table;
+
+            button = new JButton("Excluir");
+            button.setOpaque(true);
+            button.setForeground(Color.WHITE);
+            button.setBackground(new Color(231, 76, 60));
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            button.addActionListener(e -> fireEditingStopped());
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            clicked = true;
+            return button;
+        }
+
+        public Object getCellEditorValue() {
+            if (clicked) {
+                int selectedRow = table.getSelectedRow();
+                String medico = (String) table.getValueAt(selectedRow, 0);
+                String paciente = (String) table.getValueAt(selectedRow, 1);
+                String data = (String) table.getValueAt(selectedRow, 2);
+                String hora = (String) table.getValueAt(selectedRow, 3);
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta consulta?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean success = ConsultaController.excluirConsulta(medico, paciente, data, hora);
+                    if (success) {
+                        model.removeRow(selectedRow);
+                        JOptionPane.showMessageDialog(null, "Consulta excluída com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao excluir consulta!", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+            clicked = false;
+            return "❌";
+        }
     }
 }

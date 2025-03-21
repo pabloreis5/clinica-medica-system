@@ -54,7 +54,6 @@ public class LoginView extends JFrame {
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(loginButton);
 
-        // 🔹 Ação do Botão de Login
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passwordField.getPassword());

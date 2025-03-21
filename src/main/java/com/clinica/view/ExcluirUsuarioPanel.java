@@ -15,13 +15,11 @@ public class ExcluirUsuarioPanel extends JPanel {
     public ExcluirUsuarioPanel() {
         setLayout(new BorderLayout());
 
-        // 🔹 Definição das colunas da tabela
         String[] columnNames = {"Username", "Password", "Role", "Excluir"};
         tableModel = new DefaultTableModel(columnNames, 0);
         userTable = new JTable(tableModel);
         userTable.setRowHeight(30); // 🔹 Aumenta a altura das células para o botão ficar visível
 
-        // 🔹 Personalizando a última coluna para exibir um botão de exclusão
         userTable.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
         userTable.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()));
 
@@ -39,8 +37,6 @@ public class ExcluirUsuarioPanel extends JPanel {
             tableModel.addRow(new Object[]{user[0], user[1], user[2], "Excluir"});
         }
     }
-
-    // 🔹 Renderer para exibir corretamente o botão na tabela
     class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {
             setOpaque(true);
